@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';  // 临时禁用：与Flutter 3.44 Android构建不兼容，待修复
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
@@ -15,6 +15,10 @@ class AvatarPicker {
   /// 让用户选择一张图片作为自定义头像，复制到 app 目录并持久化。
   /// 返回提示文案（成功/取消/失败），由调用方决定如何展示。
   static Future<String> pickAndSet(WidgetRef ref) async {
+    // TODO: 临时禁用file_picker以完成Android构建，待修复后恢复
+    return '头像上传功能暂未启用';
+
+    /* 原file_picker代码，待修复后恢复
     try {
       final result = await FilePicker.pickFiles(
         type: FileType.image,
@@ -49,6 +53,7 @@ class AvatarPicker {
     } catch (e) {
       return '设置头像失败：$e';
     }
+    */
   }
 
   /// 重置为默认头像（漂泊者 / 星芒）。
