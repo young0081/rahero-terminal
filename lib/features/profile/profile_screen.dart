@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,8 +8,10 @@ import '../../core/responsive/responsive.dart';
 import '../../core/theme/app_theme.dart';
 import '../achievements/achievement_data.dart';
 import '../achievements/achievement_view.dart';
+import '../codex/wiki_providers.dart';
 import '../feixun/avatar_picker.dart';
 import 'collection_data.dart';
+import 'daily_terminal_event.dart';
 import 'profile_data.dart';
 import 'profile_edit_sheet.dart';
 
@@ -21,6 +25,7 @@ class ProfileScreen extends ConsumerWidget {
     final profile = ref.watch(profileProvider);
     final collection = ref.watch(collectionProvider);
     final achievements = ref.watch(achievementProgressProvider);
+    final dailyEvent = ref.watch(dailyTerminalEventProvider);
 
     return Padding(
       padding: const EdgeInsets.all(AppDimens.gapLg),
@@ -29,11 +34,14 @@ class ProfileScreen extends ConsumerWidget {
           // 移动端顶部已有 AppBar 显示"我的"，避免页内标题重复；
           // 桌面/平板用 NavigationRail 无 AppBar，故保留页内标题。
           if (!Responsive.isMobile(context)) ...[
-            const Text('我的',
-                style: TextStyle(
-                    color: AppColors.silver,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600)),
+            const Text(
+              '我的',
+              style: TextStyle(
+                color: AppColors.silver,
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: AppDimens.gapLg),
           ],
 
@@ -52,9 +60,10 @@ class ProfileScreen extends ConsumerWidget {
                       Text(
                         profile.nickname.isEmpty ? '漂泊者' : profile.nickname,
                         style: const TextStyle(
-                            color: AppColors.silver,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600),
+                          color: AppColors.silver,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       const SizedBox(height: 2),
                       Text(
@@ -62,7 +71,9 @@ class ProfileScreen extends ConsumerWidget {
                             ? '（还没有签名，点右侧编辑）'
                             : profile.signature,
                         style: const TextStyle(
-                            color: AppColors.textMuted, fontSize: 13),
+                          color: AppColors.textMuted,
+                          fontSize: 13,
+                        ),
                       ),
                       const SizedBox(height: AppDimens.gapSm),
                       Wrap(
@@ -82,8 +93,10 @@ class ProfileScreen extends ConsumerWidget {
                 ),
                 IconButton(
                   tooltip: '编辑资料',
-                  icon: const Icon(Icons.edit_outlined,
-                      color: AppColors.coolAccent),
+                  icon: const Icon(
+                    Icons.edit_outlined,
+                    color: AppColors.coolAccent,
+                  ),
                   onPressed: () => showProfileEditSheet(context, ref),
                 ),
               ],
@@ -91,26 +104,40 @@ class ProfileScreen extends ConsumerWidget {
           ),
           const SizedBox(height: AppDimens.gapLg),
 
+          // —— 每日终端简报 ——
+          _DailyTerminalPanel(event: dailyEvent),
+          const SizedBox(height: AppDimens.gapLg),
+
           // —— 使用统计 ——
           TerminalPanel(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('使用统计',
-                    style: TextStyle(
-                        color: AppColors.silver,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600)),
+                const Text(
+                  '使用统计',
+                  style: TextStyle(
+                    color: AppColors.silver,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 const SizedBox(height: AppDimens.gapMd),
                 Row(
                   children: [
                     _StatBox(
-                        label: '已浏览条目',
-                        value: '${collection.viewedCount}'),
+                      label: '已浏览条目',
+                      value: '${collection.viewedCount}',
+                    ),
                     const SizedBox(width: AppDimens.gapMd),
                     _StatBox(
-                        label: '收藏条目',
-                        value: '${collection.favoriteCount}'),
+                      label: '收藏条目',
+                      value: '${collection.favoriteCount}',
+                    ),
+                    const SizedBox(width: AppDimens.gapMd),
+                    _StatBox(
+                      label: '成就解锁',
+                      value: '${achievements.unlocked.length}',
+                    ),
                   ],
                 ),
               ],
@@ -164,7 +191,7 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: AppDimens.gapLg),
 
           // —— 收藏夹 ——
-          _FavoritesPanel(favorites: collection.favorites),
+          _FavoritesPanel(collection: collection),
         ],
       ),
     );
@@ -186,6 +213,73 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
+/// 每日终端简报。
+class _DailyTerminalPanel extends StatelessWidget {
+  final DailyTerminalEvent event;
+  const _DailyTerminalPanel({required this.event});
+
+  @override
+  Widget build(BuildContext context) {
+    return TerminalPanel(
+      glow: AppColors.coolGlow,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.auto_awesome, color: AppColors.coolAccent),
+              const SizedBox(width: AppDimens.gapSm),
+              const Expanded(
+                child: Text(
+                  '每日终端简报',
+                  style: TextStyle(
+                    color: AppColors.silver,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Text(
+                event.signal,
+                style: const TextStyle(color: AppColors.steel, fontSize: 12),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppDimens.gapSm),
+          Text(
+            event.headline,
+            style: const TextStyle(
+              color: AppColors.coolAccent,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            event.brief,
+            style: const TextStyle(
+              color: AppColors.silver,
+              fontSize: 13,
+              height: 1.6,
+            ),
+          ),
+          const SizedBox(height: AppDimens.gapMd),
+          Wrap(
+            spacing: AppDimens.gapSm,
+            runSpacing: AppDimens.gapSm,
+            children: [
+              _Chip(label: event.dateLabel),
+              _Chip(label: '关键词 ${event.keyword}'),
+              _Chip(label: event.sign),
+              _Chip(label: event.recommendation),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// 小信息标签。
 class _Chip extends StatelessWidget {
   final String label;
@@ -200,8 +294,10 @@ class _Chip extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppDimens.radiusSmall),
         border: Border.all(color: AppColors.border),
       ),
-      child: Text(label,
-          style: const TextStyle(color: AppColors.steel, fontSize: 12)),
+      child: Text(
+        label,
+        style: const TextStyle(color: AppColors.steel, fontSize: 12),
+      ),
     );
   }
 }
@@ -224,15 +320,19 @@ class _StatBox extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Text(value,
-                style: const TextStyle(
-                    color: AppColors.coolAccent,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700)),
+            Text(
+              value,
+              style: const TextStyle(
+                color: AppColors.coolAccent,
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
             const SizedBox(height: 2),
-            Text(label,
-                style:
-                    const TextStyle(color: AppColors.textMuted, fontSize: 12)),
+            Text(
+              label,
+              style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
+            ),
           ],
         ),
       ),
@@ -242,37 +342,40 @@ class _StatBox extends StatelessWidget {
 
 /// 收藏夹面板：列出收藏的条目名（key 形如 category:entryId，这里显示分类+计数）。
 class _FavoritesPanel extends StatelessWidget {
-  final Set<String> favorites;
-  const _FavoritesPanel({required this.favorites});
+  final CollectionState collection;
+  const _FavoritesPanel({required this.collection});
 
   @override
   Widget build(BuildContext context) {
+    final favorites = collection.favorites;
+    final items = collection.showcaseItems;
     // 按分类聚合计数。
     final byCat = <String, int>{};
     for (final k in favorites) {
       final cat = k.contains(':') ? k.split(':').first : '其他';
       byCat[cat] = (byCat[cat] ?? 0) + 1;
     }
-    const catLabel = {
-      'resonator': '共鸣者',
-      'weapon': '武器',
-      'echo': '声骸',
-    };
+    const catLabel = {'resonator': '共鸣者', 'weapon': '武器', 'echo': '声骸'};
 
     return TerminalPanel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('我的收藏',
-              style: TextStyle(
-                  color: AppColors.silver,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600)),
+          const Text(
+            '我的收藏',
+            style: TextStyle(
+              color: AppColors.silver,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           const SizedBox(height: AppDimens.gapXs),
           if (favorites.isEmpty)
-            const Text('还没有收藏。在图鉴里点开条目，右上角心形即可收藏。',
-                style: TextStyle(color: AppColors.textMuted, fontSize: 13))
-          else
+            const Text(
+              '还没有收藏。在图鉴里点开条目，右上角心形即可收藏。',
+              style: TextStyle(color: AppColors.textMuted, fontSize: 13),
+            )
+          else ...[
             Padding(
               padding: const EdgeInsets.only(top: AppDimens.gapSm),
               child: Wrap(
@@ -284,6 +387,105 @@ class _FavoritesPanel extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: AppDimens.gapMd),
+            if (items.isEmpty)
+              const Text(
+                '旧收藏缺少展柜信息。重新收藏条目后会显示名称与星级。',
+                style: TextStyle(color: AppColors.textMuted, fontSize: 13),
+              )
+            else
+              Wrap(
+                spacing: AppDimens.gapSm,
+                runSpacing: AppDimens.gapSm,
+                children: [
+                  for (final item in items.take(8)) _ShowcaseItem(item: item),
+                ],
+              ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _ShowcaseItem extends ConsumerWidget {
+  final CollectionItem item;
+  const _ShowcaseItem({required this.item});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final image = item.figureUrl.isEmpty
+        ? null
+        : ref.watch(wikiImageProvider(item.figureUrl));
+    return Container(
+      width: 160,
+      padding: const EdgeInsets.all(AppDimens.gapSm),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimens.radiusMedium),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AspectRatio(
+            aspectRatio: 1.25,
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.surfaceHigh,
+                borderRadius: BorderRadius.circular(AppDimens.radiusSmall),
+                border: Border.all(color: AppColors.border),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: image == null
+                  ? const Icon(
+                      Icons.auto_awesome,
+                      color: AppColors.coolAccent,
+                      size: 28,
+                    )
+                  : image.maybeWhen(
+                      data: (path) => (path != null && File(path).existsSync())
+                          ? Image.file(File(path), fit: BoxFit.contain)
+                          : const Icon(
+                              Icons.image_not_supported_outlined,
+                              color: AppColors.textMuted,
+                            ),
+                      orElse: () => const Center(
+                        child: SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ),
+                    ),
+            ),
+          ),
+          const SizedBox(height: AppDimens.gapSm),
+          Text(
+            item.categoryLabel.isEmpty ? item.category : item.categoryLabel,
+            style: const TextStyle(color: AppColors.steel, fontSize: 11),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            item.name.isEmpty ? item.key : item.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: AppColors.silver,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          if (item.star > 0) ...[
+            const SizedBox(height: 2),
+            Text(
+              '★' * item.star,
+              maxLines: 1,
+              overflow: TextOverflow.clip,
+              style: const TextStyle(color: AppColors.coolAccent, fontSize: 11),
+            ),
+          ],
         ],
       ),
     );

@@ -24,7 +24,7 @@ class FeixunScreen extends ConsumerWidget {
     final async = ref.watch(feixunContactsProvider);
     return async.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(
+      error: (e, stackTrace) => Center(
         child: Text('飞讯加载失败：$e',
             style: const TextStyle(color: AppColors.danger)),
       ),
@@ -89,7 +89,7 @@ class _ContactListTile extends ConsumerWidget {
               ),
             ),
             loading: () => const SizedBox.shrink(),
-            error: (_, __) => const SizedBox.shrink(),
+            error: (error, stackTrace) => const SizedBox.shrink(),
           ),
         ],
       ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_theme.dart';
@@ -220,9 +219,8 @@ class _UGCScriptEditorScreenState extends ConsumerState<UGCScriptEditorScreen> {
                   : ReorderableListView.builder(
                       padding: const EdgeInsets.all(AppDimens.gapMd),
                       itemCount: _messages.length,
-                      onReorder: (oldIndex, newIndex) {
+                      onReorderItem: (oldIndex, newIndex) {
                         setState(() {
-                          if (newIndex > oldIndex) newIndex--;
                           final item = _messages.removeAt(oldIndex);
                           _messages.insert(newIndex, item);
                         });

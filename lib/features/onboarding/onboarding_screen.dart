@@ -42,7 +42,7 @@ const List<GuideStep> kGuideSteps = [
   GuideStep(
     id: 'archive',
     title: '势力档案',
-    description: '浏览 16 个势力的动态图标和简介，了解鸣潮世界观。',
+    description: '浏览 9 个势力/组织的动态图标和简介，了解鸣潮世界观。',
     icon: Icons.hub,
   ),
   GuideStep(
@@ -85,8 +85,9 @@ class GuideStateNotifier extends Notifier<bool> {
   }
 }
 
-final guideCompletedProvider =
-    NotifierProvider<GuideStateNotifier, bool>(GuideStateNotifier.new);
+final guideCompletedProvider = NotifierProvider<GuideStateNotifier, bool>(
+  GuideStateNotifier.new,
+);
 
 /// 新手引导界面
 class OnboardingScreen extends ConsumerStatefulWidget {
@@ -184,7 +185,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             child: const Text('上一步'),
                           ),
                         ),
-                      if (_currentPage > 0) const SizedBox(width: AppDimens.gapMd),
+                      if (_currentPage > 0)
+                        const SizedBox(width: AppDimens.gapMd),
                       Expanded(
                         child: FilledButton(
                           onPressed: _next,
@@ -264,11 +266,7 @@ class _StepPage extends StatelessWidget {
                 width: 2,
               ),
             ),
-            child: Icon(
-              step.icon,
-              size: 64,
-              color: AppColors.coolAccent,
-            ),
+            child: Icon(step.icon, size: 64, color: AppColors.coolAccent),
           ),
           const SizedBox(height: AppDimens.gapXl),
 

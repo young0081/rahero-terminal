@@ -12,7 +12,7 @@
 - [x] 2.2 添加依赖：flutter_riverpod、hive + hive_flutter、media_kit（桌面视频）、video_player（Android 视频）、go_router、path_provider、dio、crypto，并执行 `flutter pub get`
 - [x] 2.3 建立 feature 分层目录结构（core / features/{boot,provisioning,shell,feixun,archive} / data / router）
 - [x] 2.4 在 pubspec.yaml 声明 assets（manifest / placeholders / scripts）；动态图标不入仓库（运行时下载）
-- [x] 2.5 编写素材清单初稿 `assets/manifest/asset_manifest.json`（16 势力 + 开机动画；id / 来源 / 缓存路径 / 类型 / 校验），占位图由代码绘制
+- [x] 2.5 编写素材清单初稿 `assets/manifest/asset_manifest.json`（9 个势力/组织 + 开机动画；id / 来源 / 缓存路径 / 类型 / 校验），占位图由代码绘制
 - [x] 2.6 配置 .gitignore（排除 build/、.dart_tool/、本地密钥、素材源目录、缓存等），编写项目 CLAUDE.md 与 README.md
 - [x] 2.7 跑通空壳应用：Windows 构建出 exe、Android 构建出 apk、widget 测试通过（骨架验证关卡）
 
@@ -60,7 +60,7 @@
 
 ## 7. 势力资料库模块（faction-archive）
 
-- [x] 7.1 定义势力条目只读数据模型并填充 16 势力占位条目（七丘、守岸人、黑海岸、椿、长离、残星会、绯雪、煌龙、爱弥斯、深空联合、星炬学院、稷庭、卡提西娅、弗洛洛、拉古那、先行公约）
+- [x] 7.1 定义势力条目只读数据模型并填充资源清单支持的 9 个势力/组织占位条目（星炬学院、深空联合、残星会、瑝珑、稷庭、七丘、黑海岸、拉古那、先行公约）
 - [x] 7.2 将缓存动态图标按条目接入，缺素材条目用代码绘制占位图标
 - [x] 7.3 实现图鉴网格（响应式列数，每项动态图标 + 名称）
 - [x] 7.4 实现条目详情视图：动态图标 + 名称 + 简介（占位文案先行），离开释放资源

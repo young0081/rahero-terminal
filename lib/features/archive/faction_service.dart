@@ -42,27 +42,31 @@ class FactionDetail {
   });
 
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'summary': summary,
-        'fullContent': fullContent,
-        'story': story,
-        'sections': sections.map((s) => s.toJson()).toList(),
-        'infoLines': infoLines,
-        'lastUpdate': lastUpdate?.toIso8601String(),
-      };
+    'name': name,
+    'summary': summary,
+    'fullContent': fullContent,
+    'story': story,
+    'sections': sections.map((s) => s.toJson()).toList(),
+    'infoLines': infoLines,
+    'lastUpdate': lastUpdate?.toIso8601String(),
+  };
 
   factory FactionDetail.fromJson(Map<String, dynamic> json) => FactionDetail(
-        name: json['name'] as String,
-        summary: json['summary'] as String?,
-        fullContent: json['fullContent'] as String?,
-        story: json['story'] as String? ?? '',
-        sections: (json['sections'] as List?)
-                ?.map((s) => WikiSection.fromCache(s as Map<String, dynamic>))
-                .toList() ??
-            [],
-        infoLines: (json['infoLines'] as List?)?.map((e) => e.toString()).toList() ?? [],
-        lastUpdate: json['lastUpdate'] != null ? DateTime.parse(json['lastUpdate'] as String) : null,
-      );
+    name: json['name'] as String,
+    summary: json['summary'] as String?,
+    fullContent: json['fullContent'] as String?,
+    story: json['story'] as String? ?? '',
+    sections:
+        (json['sections'] as List?)
+            ?.map((s) => WikiSection.fromCache(s as Map<String, dynamic>))
+            .toList() ??
+        [],
+    infoLines:
+        (json['infoLines'] as List?)?.map((e) => e.toString()).toList() ?? [],
+    lastUpdate: json['lastUpdate'] != null
+        ? DateTime.parse(json['lastUpdate'] as String)
+        : null,
+  );
 
   /// 从萌娘百科数据创建（自动生成sections）
   factory FactionDetail.fromMoegirl({
@@ -75,12 +79,7 @@ class FactionDetail {
 
     // 如果有摘要，创建简介section
     if (summary != null && summary.isNotEmpty) {
-      sections.add(WikiSection(
-        title: '简介',
-        blocks: [
-          WikiBlock.text(summary),
-        ],
-      ));
+      sections.add(WikiSection(title: '简介', blocks: [WikiBlock.text(summary)]));
     }
 
     // 如果有完整内容但没有摘要，从HTML提取文本
@@ -88,12 +87,18 @@ class FactionDetail {
       // 简单提取：去掉HTML标签
       final plainText = _stripHtmlTags(fullContent);
       if (plainText.isNotEmpty) {
-        sections.add(WikiSection(
-          title: '详情',
-          blocks: [
-            WikiBlock.text(plainText.length > 500 ? plainText.substring(0, 500) + '...' : plainText),
-          ],
-        ));
+        sections.add(
+          WikiSection(
+            title: '详情',
+            blocks: [
+              WikiBlock.text(
+                plainText.length > 500
+                    ? '${plainText.substring(0, 500)}...'
+                    : plainText,
+              ),
+            ],
+          ),
+        );
       }
     }
 
@@ -122,11 +127,7 @@ class FactionListResult {
   final List<FactionEntry> entries;
   final String? error;
   final DateTime? lastUpdate;
-  const FactionListResult({
-    required this.entries,
-    this.error,
-    this.lastUpdate,
-  });
+  const FactionListResult({required this.entries, this.error, this.lastUpdate});
 }
 
 /// 势力档案服务（从萌娘百科获取）。
@@ -139,18 +140,26 @@ class FactionService {
   /// 本地内置势力列表（有动态 LOGO 的）。
   static const List<FactionEntry> _localFactions = [
     FactionEntry(assetId: 'faction_xingju', name: '星炬学院', moegirlName: '星炬学院'),
-    FactionEntry(assetId: 'faction_shenkong', name: '深空联合', moegirlName: '深空联合'),
-    FactionEntry(assetId: 'faction_canxinghui', name: '残星会', moegirlName: '残星会'),
-    FactionEntry(assetId: 'faction_huanglong', name: '煌龙', moegirlName: '煌龙（鸣潮）'),
+    FactionEntry(
+      assetId: 'faction_shenkong',
+      name: '深空联合',
+      moegirlName: '深空联合',
+    ),
+    FactionEntry(
+      assetId: 'faction_canxinghui',
+      name: '残星会',
+      moegirlName: '残星会',
+    ),
+    FactionEntry(assetId: 'faction_huanglong', name: '瑝珑', moegirlName: '瑝珑'),
     FactionEntry(assetId: 'faction_jiting', name: '稷庭', moegirlName: '稷庭'),
     FactionEntry(assetId: 'faction_qiqiu', name: '七丘', moegirlName: '七丘'),
     FactionEntry(assetId: 'faction_heihaian', name: '黑海岸', moegirlName: '黑海岸'),
     FactionEntry(assetId: 'faction_laguna', name: '拉古那', moegirlName: '拉古那'),
-    FactionEntry(assetId: 'faction_xianxinggongyue', name: '先行公约', moegirlName: '先行公约'),
-    FactionEntry(assetId: 'faction_xinlianmeng', name: '新联盟', moegirlName: '新联盟'),
-    FactionEntry(assetId: 'faction_liushang', name: '流殇', moegirlName: '流殇'),
-    FactionEntry(assetId: 'faction_guiyin', name: '归隐', moegirlName: '归隐'),
-    FactionEntry(assetId: 'faction_heimenli', name: '黑门里', moegirlName: '黑门里'),
+    FactionEntry(
+      assetId: 'faction_xianxinggongyue',
+      name: '先行公约',
+      moegirlName: '先行公约',
+    ),
   ];
 
   /// 缓存键
@@ -167,14 +176,18 @@ class FactionService {
   /// 获取势力详情（从萌娘百科获取，带缓存）
   Future<FactionDetail?> getDetail(String factionName) async {
     // 找到对应的势力条目
-    final faction = _localFactions.where((f) => f.name == factionName).firstOrNull;
+    final faction = _localFactions
+        .where((f) => f.name == factionName)
+        .firstOrNull;
     final moegirlName = faction?.moegirlName ?? factionName;
 
     // 先尝试从缓存读取
     final cached = _getCached(factionName);
     if (cached != null) {
       // 检查缓存是否过期（7天）
-      final age = DateTime.now().difference(cached.lastUpdate ?? DateTime.now());
+      final age = DateTime.now().difference(
+        cached.lastUpdate ?? DateTime.now(),
+      );
       if (age.inDays < 7) {
         return cached;
       }
@@ -262,14 +275,19 @@ class FactionService {
 }
 
 /// Provider
-final factionServiceProvider = Provider<FactionService>((ref) => FactionService.instance);
+final factionServiceProvider = Provider<FactionService>(
+  (ref) => FactionService.instance,
+);
 
 final factionListProvider = FutureProvider<FactionListResult>((ref) async {
   final service = ref.watch(factionServiceProvider);
   return service.getList();
 });
 
-final factionDetailProvider = FutureProvider.family<FactionDetail?, String>((ref, factionName) async {
+final factionDetailProvider = FutureProvider.family<FactionDetail?, String>((
+  ref,
+  factionName,
+) async {
   final service = ref.watch(factionServiceProvider);
   return service.getDetail(factionName);
 });

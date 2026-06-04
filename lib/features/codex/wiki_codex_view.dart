@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../core/responsive/responsive.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/glitch_loader.dart';
+import '../achievements/achievement_trigger.dart';
 import '../profile/collection_data.dart';
 import 'voice_player.dart';
 import 'wiki_categories.dart';
@@ -282,10 +283,9 @@ class _WikiDetailSheetState extends ConsumerState<_WikiDetailSheet> {
     final detail = ref.watch(wikiDetailProvider(entry));
     final favKey = collectionKey(entry.category.name, entry.entryId);
     final isFav = ref.watch(collectionProvider).isFavorite(favKey);
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.sizeOf(context).height * 0.8,
-      ),
+    return SizedBox(
+      width: double.infinity,
+      height: MediaQuery.sizeOf(context).height * 0.92,
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
           AppDimens.gapLg,
@@ -336,9 +336,29 @@ class _WikiDetailSheetState extends ConsumerState<_WikiDetailSheet> {
                     isFav ? Icons.favorite : Icons.favorite_border,
                     color: isFav ? AppColors.danger : AppColors.steel,
                   ),
-                  onPressed: () => ref
-                      .read(collectionProvider.notifier)
-                      .toggleFavorite(favKey),
+                  onPressed: () async {
+                    final added = await ref
+                        .read(collectionProvider.notifier)
+                        .toggleFavorite(
+                          favKey,
+                          item: CollectionItem(
+                            key: favKey,
+                            category: entry.category.name,
+                            categoryLabel: entry.category.displayName,
+                            entryId: entry.entryId,
+                            name: entry.name,
+                            star: entry.star,
+                            figureUrl: entry.figureUrl,
+                            addedAt: DateTime.now(),
+                          ),
+                        );
+                    if (added && context.mounted) {
+                      await AchievementTrigger(
+                        ref,
+                        context: context,
+                      ).onFavoriteEntry();
+                    }
+                  },
                 ),
               ],
             ),
@@ -525,10 +545,11 @@ class _TableCell extends StatelessWidget {
         );
       }
     }
+    final useLargeImage = _isGifUrl(cell.imageUrl);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 220),
+        constraints: BoxConstraints(maxWidth: useLargeImage ? 320 : 220),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -536,7 +557,13 @@ class _TableCell extends StatelessWidget {
             if (cell.imageUrl.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(bottom: cell.text.isEmpty ? 0 : 2),
-                child: _CachedImage(url: cell.imageUrl, width: 40, height: 40),
+                child: useLargeImage
+                    ? _ZoomableCachedImage(
+                        url: cell.imageUrl,
+                        width: 300,
+                        height: 220,
+                      )
+                    : _CachedImage(url: cell.imageUrl, width: 40, height: 40),
               ),
             ?textWidget,
           ],
@@ -557,7 +584,6 @@ Future<void> openExternalUrl(String url) async {
   }
 }
 
-/// 详情内嵌的整幅大图（技能演示图 / 剧情插画等），按需下载、占位降级。
 /// 详情内嵌的整幅大图（技能演示图 / 剧情插画等）。
 /// 铺满可用宽度显示（小图也放大到看得清），点击全屏查看原图。
 class _BlockImage extends ConsumerWidget {
@@ -572,22 +598,26 @@ class _BlockImage extends ConsumerWidget {
         if (path == null || !File(path).existsSync()) {
           return const SizedBox(height: 120, child: _FigurePlaceholder());
         }
-        return GestureDetector(
-          onTap: () => _openFullScreen(context, path),
-          child: Container(
-            constraints: const BoxConstraints(
-              minHeight: 300, // 最小高度，确保小图也能看清
-              maxHeight: 600, // 最大高度，避免超大图占用太多空间
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppDimens.radiusMedium),
-              child: Image.file(
-                File(path),
-                width: double.infinity,
-                fit: BoxFit.contain, // 改为contain，保持原始比例不变形
-              ),
-            ),
-          ),
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final screen = MediaQuery.sizeOf(context);
+            final baseHeight = Responsive.value<double>(
+              context,
+              mobile: 320,
+              tablet: 420,
+              desktop: 520,
+            );
+            final maxHeight = screen.height * 0.72;
+            final height = baseHeight.clamp(280.0, maxHeight).toDouble();
+            return _ZoomableFileImage(
+              path: path,
+              width: constraints.maxWidth.isFinite
+                  ? constraints.maxWidth
+                  : double.infinity,
+              height: height,
+              borderRadius: AppDimens.radiusMedium,
+            );
+          },
         );
       },
       orElse: () => const SizedBox(
@@ -599,17 +629,6 @@ class _BlockImage extends ConsumerWidget {
             child: CircularProgressIndicator(strokeWidth: 2),
           ),
         ),
-      ),
-    );
-  }
-
-  /// 全屏查看：黑底 + InteractiveViewer 支持双指缩放/拖动，点击任意处关闭。
-  void _openFullScreen(BuildContext context, String path) {
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        opaque: false,
-        barrierColor: Colors.black87,
-        pageBuilder: (_, _, _) => _FullScreenImage(path: path),
       ),
     );
   }
@@ -651,38 +670,52 @@ class _FullScreenImage extends StatelessWidget {
 }
 
 /// 角色立绘多图：横向滚动画廊。
-class _ImageGallery extends StatelessWidget {
+class _ImageGallery extends ConsumerWidget {
   final List<String> urls;
   const _ImageGallery({required this.urls});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final height = Responsive.value<double>(
+      context,
+      mobile: 260,
+      tablet: 320,
+      desktop: 360,
+    );
+    final width =
+        (MediaQuery.sizeOf(context).width -
+                AppDimens.gapLg * 2 -
+                AppDimens.gapSm)
+            .clamp(300.0, 720.0)
+            .toDouble();
     return SizedBox(
-      height: 180,
+      height: height,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: urls.length,
         separatorBuilder: (_, _) => const SizedBox(width: AppDimens.gapSm),
-        itemBuilder: (_, i) => ClipRRect(
-          borderRadius: BorderRadius.circular(AppDimens.radiusSmall),
-          child: _CachedImage(url: urls[i], height: 180, fit: BoxFit.contain),
+        itemBuilder: (_, i) => _ZoomableCachedImage(
+          url: urls[i],
+          width: width,
+          height: height,
+          borderRadius: AppDimens.radiusSmall,
         ),
       ),
     );
   }
 }
 
-/// 按 URL 惰性下载并缓存后显示的图片；加载中转圈，失败占位。
-class _CachedImage extends ConsumerWidget {
+class _ZoomableCachedImage extends ConsumerWidget {
   final String url;
   final double? width;
   final double? height;
-  final BoxFit fit;
-  const _CachedImage({
+  final double borderRadius;
+
+  const _ZoomableCachedImage({
     required this.url,
     this.width,
     this.height,
-    this.fit = BoxFit.contain,
+    this.borderRadius = AppDimens.radiusMedium,
   });
 
   @override
@@ -690,7 +723,120 @@ class _CachedImage extends ConsumerWidget {
     final async = ref.watch(wikiImageProvider(url));
     return async.maybeWhen(
       data: (path) => (path != null && File(path).existsSync())
-          ? Image.file(File(path), width: width, height: height, fit: fit)
+          ? _ZoomableFileImage(
+              path: path,
+              width: width,
+              height: height,
+              borderRadius: borderRadius,
+            )
+          : SizedBox(
+              width: width,
+              height: height,
+              child: const _FigurePlaceholder(),
+            ),
+      orElse: () => SizedBox(
+        width: width,
+        height: height,
+        child: const Center(
+          child: SizedBox(
+            width: 14,
+            height: 14,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ZoomableFileImage extends StatelessWidget {
+  final String path;
+  final double? width;
+  final double? height;
+  final double borderRadius;
+
+  const _ZoomableFileImage({
+    required this.path,
+    this.width,
+    this.height,
+    required this.borderRadius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _openFullScreenImage(context, path),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: Container(
+          width: width,
+          height: height,
+          color: Colors.black.withValues(alpha: 0.24),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Image.file(File(path), fit: BoxFit.contain),
+              ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.45),
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(6),
+                    child: Icon(
+                      Icons.open_in_full,
+                      color: AppColors.silver,
+                      size: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+bool _isGifUrl(String url) {
+  final path = Uri.tryParse(url)?.path.toLowerCase() ?? url.toLowerCase();
+  return path.endsWith('.gif');
+}
+
+void _openFullScreenImage(BuildContext context, String path) {
+  Navigator.of(context).push(
+    PageRouteBuilder(
+      opaque: false,
+      barrierColor: Colors.black87,
+      pageBuilder: (_, _, _) => _FullScreenImage(path: path),
+    ),
+  );
+}
+
+/// 按 URL 惰性下载并缓存后显示的图片；加载中转圈，失败占位。
+class _CachedImage extends ConsumerWidget {
+  final String url;
+  final double? width;
+  final double? height;
+  const _CachedImage({required this.url, this.width, this.height});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final async = ref.watch(wikiImageProvider(url));
+    return async.maybeWhen(
+      data: (path) => (path != null && File(path).existsSync())
+          ? Image.file(
+              File(path),
+              width: width,
+              height: height,
+              fit: BoxFit.contain,
+            )
           : SizedBox(
               width: width,
               height: height,

@@ -1,9 +1,6 @@
-import 'dart:io';
-
 // import 'package:file_picker/file_picker.dart';  // 临时禁用：与Flutter 3.44 Android构建不兼容，待修复
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../core/theme/app_theme.dart';
 import 'feixun_avatar.dart';
@@ -64,15 +61,6 @@ class AvatarPicker {
     } catch (e) {
       return '重置失败：$e';
     }
-  }
-
-  static String _ext(String path) {
-    final i = path.lastIndexOf('.');
-    if (i < 0 || i == path.length - 1) return '.png';
-    final e = path.substring(i).toLowerCase();
-    // 仅接受常见图片扩展名，其余统一按 .png 存（Image.file 按内容解码，不依赖扩展名）
-    const ok = {'.png', '.jpg', '.jpeg', '.webp', '.bmp', '.gif'};
-    return ok.contains(e) ? e : '.png';
   }
 }
 

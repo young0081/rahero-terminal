@@ -36,21 +36,23 @@ class AchievementProgress {
   AchievementProgress copyWith({
     Set<String>? unlocked,
     Map<String, int>? progress,
-  }) =>
-      AchievementProgress(
-        unlocked: unlocked ?? this.unlocked,
-        progress: progress ?? this.progress,
-      );
+  }) => AchievementProgress(
+    unlocked: unlocked ?? this.unlocked,
+    progress: progress ?? this.progress,
+  );
 
   Map<String, dynamic> toJson() => {
-        'unlocked': unlocked.toList(),
-        'progress': progress,
-      };
+    'unlocked': unlocked.toList(),
+    'progress': progress,
+  };
 
   factory AchievementProgress.fromJson(Map<String, dynamic> j) {
     final unlockedList = (j['unlocked'] as List?)?.cast<String>() ?? [];
     final progressMap =
-        (j['progress'] as Map?)?.map((k, v) => MapEntry(k.toString(), v as int)) ?? {};
+        (j['progress'] as Map?)?.map(
+          (k, v) => MapEntry(k.toString(), v as int),
+        ) ??
+        {};
     return AchievementProgress(
       unlocked: Set<String>.from(unlockedList),
       progress: Map<String, int>.from(progressMap),
@@ -176,7 +178,7 @@ const List<Achievement> kAchievements = [
     name: '势力观察者',
     description: '查看所有势力档案',
     category: '探索',
-    target: 16,
+    target: 9,
     icon: '🔍',
   ),
   Achievement(
@@ -234,7 +236,9 @@ class AchievementProgressNotifier extends Notifier<AchievementProgress> {
     final raw = AppStorage.getSetting<String>(_key, '');
     if (raw.isEmpty) return const AchievementProgress();
     try {
-      return AchievementProgress.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+      return AchievementProgress.fromJson(
+        jsonDecode(raw) as Map<String, dynamic>,
+      );
     } catch (_) {
       return const AchievementProgress();
     }
@@ -254,12 +258,16 @@ class AchievementProgressNotifier extends Notifier<AchievementProgress> {
     newProgressMap[achievementId] = newProgress;
 
     final newUnlocked = Set<String>.from(state.unlocked);
-    final justUnlocked = !state.isUnlocked(achievementId) && newProgress >= achievement.target;
+    final justUnlocked =
+        !state.isUnlocked(achievementId) && newProgress >= achievement.target;
     if (justUnlocked) {
       newUnlocked.add(achievementId);
     }
 
-    state = AchievementProgress(unlocked: newUnlocked, progress: newProgressMap);
+    state = AchievementProgress(
+      unlocked: newUnlocked,
+      progress: newProgressMap,
+    );
     await _save();
     return justUnlocked;
   }
@@ -285,8 +293,8 @@ class AchievementProgressNotifier extends Notifier<AchievementProgress> {
 
 final achievementProgressProvider =
     NotifierProvider<AchievementProgressNotifier, AchievementProgress>(
-  AchievementProgressNotifier.new,
-);
+      AchievementProgressNotifier.new,
+    );
 
 /// 辅助方法：获取成就完成百分比（已解锁数 / 总数）。
 int getAchievementCompletionPercent(AchievementProgress progress) {

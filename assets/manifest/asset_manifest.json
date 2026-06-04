@@ -73,8 +73,8 @@
     { "id": "faction_canxinghui", "name": "残星会", "category": "faction", "type": "image", "source": "factions/canxinghui.png", "cache": "factions/canxinghui.png", "checksum": "" },
     { "id": "faction_canxinghui_anim", "name": "残星会 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/canxinghui.apng", "cache": "factions/canxinghui.apng", "checksum": "" },
 
-    { "id": "faction_huanglong", "name": "煌龙", "category": "faction", "type": "image", "source": "factions/huanglong.png", "cache": "factions/huanglong.png", "checksum": "" },
-    { "id": "faction_huanglong_anim", "name": "煌龙 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/huanglong.apng", "cache": "factions/huanglong.apng", "checksum": "" },
+    { "id": "faction_huanglong", "name": "瑝珑", "category": "faction", "type": "image", "source": "factions/huanglong.png", "cache": "factions/huanglong.png", "checksum": "" },
+    { "id": "faction_huanglong_anim", "name": "瑝珑 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/huanglong.apng", "cache": "factions/huanglong.apng", "checksum": "" },
 
     { "id": "faction_jiting", "name": "稷庭", "category": "faction", "type": "image", "source": "factions/jiting.png", "cache": "factions/jiting.png", "checksum": "" },
     { "id": "faction_jiting_anim", "name": "稷庭 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/jiting.apng", "cache": "factions/jiting.apng", "checksum": "" },
