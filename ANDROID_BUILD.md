@@ -1,5 +1,15 @@
 # Android 构建完整指南
 
+## 当前状态
+
+- ✅ Android Release APK 已成功构建
+- 发布文件名：`拉海洛终端_v1.3_Android.apk`
+- 桌面分发路径：`D:\用户\16235\Desktop\拉海洛终端_v1.3_Android.apk`
+- SHA256：`5c6912141e43f448312f11e3c9c87f1660c7b60d08d28226530fbeead74bf69a`
+- 当前限制：受 `file_picker` 兼容性影响，头像上传与 UGC 导入/导出暂不可用
+
+---
+
 ## 前提条件
 
 ### 1. Flutter SDK
@@ -38,11 +48,13 @@ export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 - path_provider: 本地存储
 - dio: 网络请求
 - url_launcher: 外部链接跳转
-- file_picker: 文件选择（UGC剧本导入导出）
+- file_picker: 已临时禁用，等待兼容性修复后恢复
 
 ---
 
 ## 构建步骤
+
+> Windows 中文路径下构建可能失败。建议先复制到 `D:\temp_build\rahero_terminal` 这类纯英文路径，再执行下述命令。
 
 ### 方式1：直接构建APK（推荐）
 
@@ -227,12 +239,12 @@ buildTypes {
 
 ## 下一步
 
-1. **立即构建**：运行 `flutter build apk --release`
-2. **测试安装**：在Android设备上安装并测试
+1. **按需复现构建**：重新运行 `flutter build apk --release`
+2. **继续功能收尾**：修复 `file_picker` 兼容性，恢复头像上传与UGC导入导出
 3. **生成图标**：制作《鸣潮》风格的应用图标
 4. **优化体积**：启用代码混淆和资源压缩
 5. **发布准备**：配置签名、生成App Bundle
 
 ---
 
-**当前状态**：配置已就绪，可以立即构建 ✅
+**当前状态**：Android Release APK 已完成构建，可直接分发或按本文流程复现 ✅

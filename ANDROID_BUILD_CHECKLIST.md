@@ -1,10 +1,10 @@
-# Android构建 - 执行清单
+# Android构建 - 执行清单（已完成）
+
+## 当前状态
+
+Android Release APK 已成功构建并产出，本文保留为复现构建步骤与排障清单。
 
 ## ⚠️ 前提条件检查
-
-**问题**：Flutter SDK未在系统PATH中找到
-
-**需要操作**：
 
 ### 选项1：安装Flutter（如果未安装）
 
@@ -59,7 +59,7 @@
 
 ---
 
-## 🚀 构建步骤（需要用户执行）
+## 🚀 复现构建步骤
 
 ### 步骤1：确认环境
 
@@ -294,6 +294,6 @@ flutter build appbundle --release
 - ✅ Android配置已完成
 - ✅ 权限已添加
 - ✅ 应用名称已修改
-- ⏳ 等待用户执行构建命令
+- ✅ Release APK 已成功生成
 
-**下一步**：用户需要确保Flutter环境可用，然后执行构建命令
+**下一步**：按需上传 GitHub Release，或在修复 `file_picker` 后补发新 APK

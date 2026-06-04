@@ -39,13 +39,13 @@
 - ⏳ **养成模拟器**：材料计算器、培养进度追踪
 - ⏳ **终端音效**：启动音效、按键反馈音、环境音
 - ⏳ **Linux桌面构建**：代码已准备，需Linux环境测试
-- ⏳ **Android真机测试**：代码已准备，需真机/模拟器验证
+- ⏳ **Android功能收尾**：修复 `file_picker` 兼容性，恢复头像上传与UGC导入导出
 
 ### 技术亮点
 - ✅ 运行时资源下载（增量同步 + sha256校验 + 原子写入）
 - ✅ 响应式布局（桌面侧边栏/移动端底栏自适应）
 - ✅ 离线优先（本地缓存 + 占位降级 + 代码绘制占位图）
-- ✅ 跨平台支持（Windows已验证，Linux/Android待测试）
+- ✅ 跨平台支持（Windows/Android已完成Release构建，Linux待测试）
 - ✅ 终端拟真化（扫描线特效 + 暗角叠加 + 故障转场）
 
 ---
@@ -64,15 +64,21 @@
 - 大小：62 MB
 - 特点：解压即用，无需安装
 
+### Android用户
+
+- 下载：[拉海洛终端_v1.3_Android.apk](https://github.com/young0081/rahero-terminal/releases/latest)
+- 支持系统：Android 5.0+（API 21+）
+- 当前限制：受 `file_picker` 兼容性影响，头像上传与 UGC 导入/导出暂不可用
+
 ### 系统要求
 - **Windows**: Windows 10/11 (64位) ✅ 已测试
 - **Linux**: 未测试（代码已准备，需Linux环境构建）
-- **Android**: 未测试（代码已准备，需真机/模拟器验证）
+- **Android**: Android 5.0+（API 21+）✅ 已完成 Release APK 构建
 - **内存**: 4GB RAM（推荐8GB）
 - **存储**: 200MB 可用空间
 - **网络**: 首次运行需要下载资源（约50-100MB）
 
-> **注意**：目前仅提供Windows构建版本，Linux和Android需要自行从源码构建。
+> **注意**：目前已完成 Windows 与 Android 构建版本；Linux 仍需自行从源码构建。
 
 ---
 
@@ -140,7 +146,7 @@ bash scripts/fetch_windows_libs.sh
 flutter build windows
 ```
 
-详细构建说明请查看：[CLAUDE.md](CLAUDE.md)
+详细构建说明请查看 [BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md) 和 [ANDROID_BUILD.md](ANDROID_BUILD.md)。
 
 ---
 
@@ -208,7 +214,7 @@ flutter build windows
 
 #### 重要说明
 - 📝 飞讯当前仅有**势力/组织占位消息**，暂无角色对话剧情
-- ⏳ Linux/Android构建未经完整测试，仅Windows版本已验证
+- ⏳ Linux 构建仍未经完整测试；Windows 与 Android Release 已完成
 
 完整更新日志：[CHANGELOG.md](CHANGELOG.md)
 
