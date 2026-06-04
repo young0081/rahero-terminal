@@ -1,4 +1,5 @@
 @echo off
+setlocal EnableDelayedExpansion
 chcp 65001 >nul
 echo ========================================
 echo 拉海洛终端 - Android 构建脚本
@@ -24,13 +25,32 @@ echo ✅ Flutter环境正常
 echo.
 
 REM 检查Android工具链
-echo [2/6] 检查Android工具链...
+echo [2/7] 检查Android工具链...
 flutter doctor --android-licenses >nul 2>&1
 echo ✅ Android工具链检查完成
 echo.
 
+REM 检查本地种子素材
+echo [3/7] 检查动态图标本地种子素材...
+if not exist assets\local_seed\boot_shenkong.apng (
+    echo ❌ 缺少 assets\local_seed\boot_shenkong.apng
+    echo 当前 CDN 地址仍是占位值，若缺少 local_seed 素材，打包出的 APK 会丢失动态图标和开机 LOGO 兜底资源。
+    echo 请使用包含 assets\local_seed 素材的工作副本重新构建。
+    pause
+    exit /b 1
+)
+if not exist assets\local_seed\faction_xingju.apng (
+    echo ❌ 缺少 assets\local_seed\faction_xingju.apng
+    echo 当前 CDN 地址仍是占位值，若缺少 local_seed 素材，打包出的 APK 会丢失势力动态图标兜底资源。
+    echo 请使用包含 assets\local_seed 素材的工作副本重新构建。
+    pause
+    exit /b 1
+)
+echo ✅ 本地种子素材存在
+echo.
+
 REM 获取依赖
-echo [3/6] 获取Flutter依赖...
+echo [4/7] 获取Flutter依赖...
 flutter pub get
 if %errorlevel% neq 0 (
     echo ❌ 依赖获取失败
@@ -41,7 +61,7 @@ echo ✅ 依赖获取完成
 echo.
 
 REM 清理旧构建
-echo [4/6] 清理旧构建文件...
+echo [5/7] 清理旧构建文件...
 if exist build\app\outputs\flutter-apk\*.apk (
     del /q build\app\outputs\flutter-apk\*.apk
 )
@@ -49,7 +69,7 @@ echo ✅ 清理完成
 echo.
 
 REM 构建APK
-echo [5/6] 构建Android APK...
+echo [6/7] 构建Android APK...
 echo 请选择构建类型:
 echo 1. Debug (快速测试，体积较大)
 echo 2. Release (正式发布，体积优化)
@@ -84,7 +104,7 @@ echo ✅ 构建完成
 echo.
 
 REM 显示结果
-echo [6/6] 构建完成!
+echo [7/7] 构建完成!
 echo.
 echo ========================================
 echo 输出文件位置:

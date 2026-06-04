@@ -61,4 +61,5 @@ D:\用户\16235\Desktop\拉海洛终端\
 ## 注意事项
 - 中文路径问题是 Flutter 工具链的已知问题
 - 建议使用英文路径存放 Flutter 项目
+- Android 打包时必须保留 `assets/local_seed` 本地种子素材；当前 CDN 地址仍未替换为正式地址，若用只含 Git 跟踪文件的 clean worktree 打包，会丢失动态图标与开机 LOGO 兜底资源
 - 如果遇到其他问题，请查看 flutter_02.log 日志文件

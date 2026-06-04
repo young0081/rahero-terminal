@@ -12,11 +12,11 @@
 
 ### APK文件
 - **文件名**: `拉海洛终端_v1.3_Android.apk`
-- **大小**: 93.8 MB (98,353,512 字节)
+- **大小**: 123.3 MB (129,337,786 字节)
 - **位置**: 
   - 桌面: `D:\用户\16235\Desktop\拉海洛终端_v1.3_Android.apk`
   - 项目: `build/app/outputs/flutter-apk/app-release.apk`
-- **SHA256**: `DB391A61720C02038B8614C4C59D51814FF2C95871E3CA81461F2E8C6632A061`
+- **SHA256**: `B404BA5CE1E38697F5206DCD9550D1142769E4E37E707F4407E744E9985AECC8`
 - **构建类型**: Release
 - **目标架构**: arm64-v8a, armeabi-v7a, x86, x86_64
 
@@ -56,6 +56,7 @@
 | media_kit依赖下载失败 | 手动下载4个架构jar文件（23MB） | ✅ |
 | file_picker兼容性问题 | 临时禁用file_picker依赖 | ✅ |
 | Gradle下载慢 | 使用腾讯云Gradle镜像 | ✅ |
+| clean worktree 丢失 `assets/local_seed` | 改为保留本地种子素材的工作副本打包，恢复动态图标 | ✅ |
 
 ### 3. 文档创建 (100%)
 
@@ -94,8 +95,8 @@
    - 已在 `/d/temp_build/rahero_terminal` 完成构建
 
 2. **APK体积较大**
-   - 当前: 124MB
-   - 原因: 包含4种架构的原生库
+   - 当前: 123.3MB
+   - 原因: 包含4种架构的原生库，以及 `assets/local_seed` 动态图标种子素材
    - 优化方案: 可拆分为多个APK（按架构）
 
 3. **media_kit依赖**
@@ -159,7 +160,7 @@ flutter build apk --release
 ### 构建输出
 ```
 Running Gradle task 'assembleRelease'...                          180.3s
-√ Built build\app\outputs\flutter-apk\app-release.apk (93.8MB)
+√ Built build\app\outputs\flutter-apk\app-release.apk (123.3MB)
 ```
 
 ---
@@ -293,8 +294,8 @@ Running Gradle task 'assembleRelease'...                          180.3s
 
 ### 📦 下载
 - **文件**: [拉海洛终端_v1.3_Android.apk](链接)
-- **大小**: 93.8 MB
-- **SHA256**: `DB391A61720C02038B8614C4C59D51814FF2C95871E3CA81461F2E8C6632A061`
+- **大小**: 123.3 MB
+- **SHA256**: `B404BA5CE1E38697F5206DCD9550D1142769E4E37E707F4407E744E9985AECC8`
 
 ### 📱 系统要求
 - Android 5.0+ (API 21+)

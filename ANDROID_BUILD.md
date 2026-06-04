@@ -5,8 +5,10 @@
 - ✅ Android Release APK 已成功构建
 - 发布文件名：`拉海洛终端_v1.3_Android.apk`
 - 桌面分发路径：`D:\用户\16235\Desktop\拉海洛终端_v1.3_Android.apk`
-- SHA256：`DB391A61720C02038B8614C4C59D51814FF2C95871E3CA81461F2E8C6632A061`
+- 文件大小：`123.3 MB`（`129,337,786` 字节）
+- SHA256：`B404BA5CE1E38697F5206DCD9550D1142769E4E37E707F4407E744E9985AECC8`
 - 当前限制：受 `file_picker` 兼容性影响，头像上传与 UGC 导入/导出暂不可用
+- 当前 APK 已内置 `assets/local_seed` 动态图标种子素材，可在离线和 CDN 未配置时显示兜底动画/静帧
 
 ---
 
@@ -55,6 +57,8 @@ export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 ## 构建步骤
 
 > Windows 中文路径下构建可能失败。建议先复制到 `D:\temp_build\rahero_terminal` 这类纯英文路径，再执行下述命令。
+>
+> 另外，当前 `asset_manifest.json` 的 CDN 地址仍是占位值，Android 包必须保留 `assets/local_seed` 下的本地种子素材。不要使用只包含 Git 跟踪文件的干净 worktree/导出目录打包，否则动态图标和开机 LOGO 兜底资源会缺失。
 
 ### 方式1：直接构建APK（推荐）
 
