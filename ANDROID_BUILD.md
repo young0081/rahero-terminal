@@ -5,9 +5,9 @@
 - ✅ Android Release APK 已成功构建
 - 发布文件名：`拉海洛终端_v1.3_Android.apk`
 - 桌面分发路径：`D:\用户\16235\Desktop\拉海洛终端_v1.3_Android.apk`
-- 文件大小：`123.3 MB`（`129,337,786` 字节）
-- SHA256：`B404BA5CE1E38697F5206DCD9550D1142769E4E37E707F4407E744E9985AECC8`
-- 当前限制：受 `file_picker` 兼容性影响，头像上传与 UGC 导入/导出暂不可用
+- 文件大小：`123.6 MB`（`129,552,307` 字节）
+- SHA256：`8C2F5DDC070A0E51ABD0C516DD54B18DA08599CA2D6C4EDE402B2EC0131F45E2`
+- 当前限制：受 `file_picker` 兼容性影响，UGC 文件导入/导出暂不可用；头像上传已通过 `image_picker` 恢复
 - 当前 APK 已内置 `assets/local_seed` 动态图标种子素材，可在离线和 CDN 未配置时显示兜底动画/静帧
 
 ---
@@ -42,7 +42,7 @@ export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 ### ✅ 应用基本信息
 - **应用名称**: 拉海洛终端
 - **包名**: `com.starforge.rahero_terminal`
-- **最小SDK**: 由Flutter配置决定（通常为API 21）
+- **最小SDK**: API 24（Android 7.0+，由 `image_picker_android` 要求）
 - **目标SDK**: 由Flutter配置决定（通常为最新稳定版）
 
 ### ✅ 依赖配置
@@ -50,7 +50,8 @@ export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 - path_provider: 本地存储
 - dio: 网络请求
 - url_launcher: 外部链接跳转
-- file_picker: 已临时禁用，等待兼容性修复后恢复
+- image_picker: 头像图片选择
+- file_picker: 已临时禁用，仅影响 UGC 文件导入/导出
 
 ---
 
@@ -244,7 +245,7 @@ buildTypes {
 ## 下一步
 
 1. **按需复现构建**：重新运行 `flutter build apk --release`
-2. **继续功能收尾**：修复 `file_picker` 兼容性，恢复头像上传与UGC导入导出
+2. **继续功能收尾**：修复 `file_picker` 兼容性，恢复 UGC 文件导入/导出
 3. **生成图标**：制作《鸣潮》风格的应用图标
 4. **优化体积**：启用代码混淆和资源压缩
 5. **发布准备**：配置签名、生成App Bundle

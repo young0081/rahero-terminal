@@ -12,18 +12,18 @@
 
 ### APK文件
 - **文件名**: `拉海洛终端_v1.3_Android.apk`
-- **大小**: 123.3 MB (129,337,786 字节)
+- **大小**: 123.6 MB (129,552,307 字节)
 - **位置**: 
   - 桌面: `D:\用户\16235\Desktop\拉海洛终端_v1.3_Android.apk`
   - 项目: `build/app/outputs/flutter-apk/app-release.apk`
-- **SHA256**: `B404BA5CE1E38697F5206DCD9550D1142769E4E37E707F4407E744E9985AECC8`
+- **SHA256**: `8C2F5DDC070A0E51ABD0C516DD54B18DA08599CA2D6C4EDE402B2EC0131F45E2`
 - **构建类型**: Release
 - **目标架构**: arm64-v8a, armeabi-v7a, x86, x86_64
 
 ### 技术配置
 - **Flutter版本**: 3.44.0
 - **Dart版本**: 3.12.0
-- **最小SDK**: API 21 (Android 5.0+)
+- **最小SDK**: API 24 (Android 7.0+)
 - **目标SDK**: 最新稳定版
 - **应用名称**: 拉海洛终端
 - **包名**: `com.starforge.rahero_terminal`
@@ -51,10 +51,10 @@
 | 问题 | 解决方案 | 状态 |
 |------|----------|------|
 | Flutter环境未找到 | 找到已安装的Flutter: D:\dev\flutter | ✅ |
-| 中文路径编码问题 | 复制项目到 /d/temp_build/rahero_terminal | ✅ |
+| 中文路径编码问题 | 复制项目到英文临时目录构建 | ✅ |
 | SSL证书验证失败 | 配置国内镜像 + 手动下载依赖 | ✅ |
 | media_kit依赖下载失败 | 手动下载4个架构jar文件（23MB） | ✅ |
-| file_picker兼容性问题 | 临时禁用file_picker依赖 | ✅ |
+| file_picker兼容性问题 | 改用 image_picker 恢复头像上传；file_picker 仅继续影响UGC文件导入导出 | ✅ |
 | Gradle下载慢 | 使用腾讯云Gradle镜像 | ✅ |
 | clean worktree 丢失 `assets/local_seed` | 改为保留本地种子素材的工作副本打包，恢复动态图标 | ✅ |
 
@@ -79,12 +79,7 @@
 ## ⚠️ 已知限制与说明
 
 ### 功能限制
-1. **头像上传功能暂时禁用**
-   - 原因: file_picker 11.0.2与Flutter 3.44存在兼容性问题
-   - 影响: 用户无法上传自定义头像（可恢复默认头像）
-   - 状态: 待修复
-
-2. **UGC剧本导入导出功能暂时禁用**
+1. **UGC剧本导入导出功能暂时禁用**
    - 原因: 依赖file_picker进行文件选择
    - 影响: 无法导入/导出JSON剧本文件
    - 状态: 待修复
@@ -92,10 +87,10 @@
 ### 技术限制
 1. **中文路径问题**
    - 必须在非中文路径下构建
-   - 已在 `/d/temp_build/rahero_terminal` 完成构建
+   - 已在 `D:\temp_build\rahero_terminal_avatar_upload_release` 完成本次构建
 
 2. **APK体积较大**
-   - 当前: 123.3MB
+   - 当前: 123.6MB
    - 原因: 包含4种架构的原生库，以及 `assets/local_seed` 动态图标种子素材
    - 优化方案: 可拆分为多个APK（按架构）
 
@@ -141,26 +136,27 @@ distributionUrl=https\://mirrors.cloud.tencent.com/gradle/gradle-9.1.0-all.zip
 ```
 
 #### 4. lib/features/feixun/avatar_picker.dart
-- 注释 `package:file_picker/file_picker.dart` 导入
-- 禁用 `pickAndSet` 方法实现
-- 隐藏UI中的"上传自定义头像"选项
+- 使用 `image_picker` 选择本地图片
+- 将头像复制到应用文档目录，避免临时文件失效
+- 更新 `userAvatarProvider`，飞讯与设置页即时刷新
 
 #### 5. pubspec.yaml
 ```yaml
-# file_picker: ^11.0.2  # 临时禁用：与Flutter 3.44 Android构建不兼容，待修复
+image_picker: ^1.2.2
+# file_picker: ^11.0.2  # 临时禁用：UGC导入导出待恢复
 ```
 
 ### 构建命令
 ```bash
-cd /d/temp_build/rahero_terminal
+cd /d/temp_build/rahero_terminal_avatar_upload_release
 flutter pub get
 flutter build apk --release
 ```
 
 ### 构建输出
 ```
-Running Gradle task 'assembleRelease'...                          180.3s
-√ Built build\app\outputs\flutter-apk\app-release.apk (123.3MB)
+Running Gradle task 'assembleRelease'...                          228.5s
+√ Built build\app\outputs\flutter-apk\app-release.apk (123.6MB)
 ```
 
 ---
@@ -197,11 +193,10 @@ Running Gradle task 'assembleRelease'...                          180.3s
 
 ### 高优先级（必做）
 
-1. **修复file_picker兼容性** 🔴
+1. **修复UGC文件导入导出** 🔴
    - [ ] 测试file_picker不同版本
-   - [ ] 或寻找替代插件（如image_picker）
-   - [ ] 恢复头像上传功能
-   - [ ] 恢复UGC剧本导入导出功能
+   - [ ] 或寻找替代文件选择插件
+   - [ ] 恢复UGC剧本文件导入导出功能
 
 2. **真机测试** 🔴
    - [ ] 在Android设备上安装APK
@@ -267,7 +262,7 @@ Running Gradle task 'assembleRelease'...                          180.3s
 - [ ] 势力档案加载
 
 ### 核心功能
-- [ ] 飞讯系统交互（不含头像上传）
+- [ ] 飞讯系统交互（含头像上传）
 - [ ] 图鉴浏览（共鸣者/武器/声骸）
 - [ ] 势力档案查看
 - [ ] 成就系统解锁
@@ -282,8 +277,8 @@ Running Gradle task 'assembleRelease'...                          180.3s
 - [ ] 多次启动无异常
 
 ### 已知限制验证
-- [ ] 头像上传功能已禁用（显示提示）
-- [ ] UGC剧本导入导出已禁用
+- [ ] 头像上传功能可选择本地图片并持久化
+- [ ] UGC剧本文件导入导出已禁用
 
 ---
 
@@ -294,11 +289,11 @@ Running Gradle task 'assembleRelease'...                          180.3s
 
 ### 📦 下载
 - **文件**: [拉海洛终端_v1.3_Android.apk](链接)
-- **大小**: 123.3 MB
-- **SHA256**: `B404BA5CE1E38697F5206DCD9550D1142769E4E37E707F4407E744E9985AECC8`
+- **大小**: 123.6 MB
+- **SHA256**: `8C2F5DDC070A0E51ABD0C516DD54B18DA08599CA2D6C4EDE402B2EC0131F45E2`
 
 ### 📱 系统要求
-- Android 5.0+ (API 21+)
+- Android 7.0+ (API 24+)
 - 约200MB可用存储空间（应用+缓存）
 - 首次运行需联网下载资源（约50-100MB）
 
@@ -319,7 +314,6 @@ Running Gradle task 'assembleRelease'...                          180.3s
 - 每日签到（虚拟货币）
 
 ### ⚠️ 已知问题
-- **头像上传功能暂未启用**: 由于file_picker插件兼容性问题，暂时无法上传自定义头像（可恢复默认头像）
 - **UGC剧本导入导出暂不可用**: 依赖file_picker，待修复
 
 ### 🔧 技术信息
@@ -328,8 +322,8 @@ Running Gradle task 'assembleRelease'...                          180.3s
 - 内置国内镜像加速
 
 ### 🔄 后续更新计划
-- 修复file_picker兼容性问题
-- 恢复头像上传和剧本导入导出功能
+- 修复UGC文件选择兼容性问题
+- 恢复剧本文件导入导出功能
 - 优化APK体积
 - 性能优化
 

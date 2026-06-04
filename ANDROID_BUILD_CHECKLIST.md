@@ -274,7 +274,7 @@ flutter build apk --split-per-abi
    certutil -hashfile app-release.apk SHA256
    ```
 3. 在Release说明中注明：
-   - 支持的Android版本（Android 5.0+）
+   - 支持的Android版本（Android 7.0+ / API 24+）
    - APK体积
    - SHA256校验和
 
@@ -296,4 +296,4 @@ flutter build appbundle --release
 - ✅ 应用名称已修改
 - ✅ Release APK 已成功生成
 
-**下一步**：按需上传 GitHub Release，或在修复 `file_picker` 后补发新 APK
+**下一步**：按需上传 GitHub Release，或在修复 `file_picker` 后补发恢复 UGC 文件导入/导出的 APK

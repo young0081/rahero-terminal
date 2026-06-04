@@ -1,6 +1,9 @@
-// import 'package:file_picker/file_picker.dart';  // 临时禁用：与Flutter 3.44 Android构建不兼容，待修复
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../core/theme/app_theme.dart';
 import 'feixun_avatar.dart';
@@ -12,21 +15,20 @@ class AvatarPicker {
   /// 让用户选择一张图片作为自定义头像，复制到 app 目录并持久化。
   /// 返回提示文案（成功/取消/失败），由调用方决定如何展示。
   static Future<String> pickAndSet(WidgetRef ref) async {
-    // TODO: 临时禁用file_picker以完成Android构建，待修复后恢复
-    return '头像上传功能暂未启用';
-
-    /* 原file_picker代码，待修复后恢复
     try {
-      final result = await FilePicker.pickFiles(
-        type: FileType.image,
-        withData: false,
+      final picked = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1200,
+        maxHeight: 1200,
+        imageQuality: 92,
+        requestFullMetadata: false,
       );
-      if (result == null || result.files.isEmpty) {
+      if (picked == null) {
         return '已取消';
       }
-      final picked = result.files.single;
-      final srcPath = picked.path;
-      if (srcPath == null) {
+
+      final src = File(picked.path);
+      if (!await src.exists()) {
         return '无法读取所选文件';
       }
 
@@ -36,12 +38,12 @@ class AvatarPicker {
       if (!await avatarDir.exists()) {
         await avatarDir.create(recursive: true);
       }
-      final ext = _ext(srcPath);
+      final ext = _ext(picked);
       // 用时间戳命名，换头像时旧文件由 reset 清理；这里覆盖式写入固定名也可，
       // 但带时间戳能避免图片缓存不刷新的问题。
       final destPath =
           '${avatarDir.path}/user_avatar_${DateTime.now().millisecondsSinceEpoch}$ext';
-      await File(srcPath).copy(destPath);
+      await src.copy(destPath);
 
       // 先重置（清理旧文件），再设新路径。
       await ref.read(userAvatarProvider.notifier).reset();
@@ -50,7 +52,26 @@ class AvatarPicker {
     } catch (e) {
       return '设置头像失败：$e';
     }
-    */
+  }
+
+  static String _ext(XFile file) {
+    final candidates = <String?>[file.name, file.path, file.mimeType];
+    for (final value in candidates) {
+      if (value == null || value.isEmpty) continue;
+      final lower = value.toLowerCase();
+      if (lower.contains('png') || lower.endsWith('.png')) return '.png';
+      if (lower.contains('webp') || lower.endsWith('.webp')) return '.webp';
+      if (lower.contains('gif') || lower.endsWith('.gif')) return '.gif';
+      if (lower.contains('heic') || lower.endsWith('.heic')) return '.heic';
+      if (lower.contains('heif') || lower.endsWith('.heif')) return '.heif';
+      if (lower.contains('jpeg') ||
+          lower.contains('jpg') ||
+          lower.endsWith('.jpeg') ||
+          lower.endsWith('.jpg')) {
+        return '.jpg';
+      }
+    }
+    return '.jpg';
   }
 
   /// 重置为默认头像（漂泊者 / 星芒）。
@@ -79,14 +100,18 @@ class TappableSelfAvatar extends ConsumerWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.upload, color: AppColors.coolAccent),
-              title: const Text('上传自定义头像',
-                  style: TextStyle(color: AppColors.silver)),
+              title: const Text(
+                '上传自定义头像',
+                style: TextStyle(color: AppColors.silver),
+              ),
               onTap: () => Navigator.pop(ctx, 'pick'),
             ),
             ListTile(
               leading: const Icon(Icons.restart_alt, color: AppColors.steel),
-              title: const Text('恢复默认头像',
-                  style: TextStyle(color: AppColors.silver)),
+              title: const Text(
+                '恢复默认头像',
+                style: TextStyle(color: AppColors.silver),
+              ),
               onTap: () => Navigator.pop(ctx, 'reset'),
             ),
           ],
@@ -124,8 +149,11 @@ class TappableSelfAvatar extends ConsumerWidget {
                 color: AppColors.surface,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.edit,
-                  size: 12, color: AppColors.coolAccent),
+              child: const Icon(
+                Icons.edit,
+                size: 12,
+                color: AppColors.coolAccent,
+              ),
             ),
           ),
         ],

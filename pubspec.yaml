@@ -46,8 +46,9 @@ dependencies:
   video_player: ^2.11.1
   crypto: ^3.0.7
   window_manager: ^0.5.1
-  # file_picker: ^11.0.2  # 临时禁用：与Flutter 3.44 Android构建不兼容，待修复
+  # file_picker: ^11.0.2  # 临时禁用：UGC导入导出待恢复
   url_launcher: ^6.3.1
+  image_picker: ^1.2.2
 
 dev_dependencies:
   flutter_test:
