@@ -5,7 +5,7 @@
 - ✅ Android Release APK 已成功构建
 - 发布文件名：`拉海洛终端_v1.3_Android.apk`
 - 桌面分发路径：`D:\用户\16235\Desktop\拉海洛终端_v1.3_Android.apk`
-- SHA256：`5c6912141e43f448312f11e3c9c87f1660c7b60d08d28226530fbeead74bf69a`
+- SHA256：`DB391A61720C02038B8614C4C59D51814FF2C95871E3CA81461F2E8C6632A061`
 - 当前限制：受 `file_picker` 兼容性影响，头像上传与 UGC 导入/导出暂不可用
 
 ---

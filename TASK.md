@@ -12,11 +12,11 @@
 
 ### APK文件
 - **文件名**: `拉海洛终端_v1.3_Android.apk`
-- **大小**: 124 MB (129,265,664 字节)
+- **大小**: 93.8 MB (98,353,512 字节)
 - **位置**: 
   - 桌面: `D:\用户\16235\Desktop\拉海洛终端_v1.3_Android.apk`
   - 项目: `build/app/outputs/flutter-apk/app-release.apk`
-- **SHA256**: `5c6912141e43f448312f11e3c9c87f1660c7b60d08d28226530fbeead74bf69a`
+- **SHA256**: `DB391A61720C02038B8614C4C59D51814FF2C95871E3CA81461F2E8C6632A061`
 - **构建类型**: Release
 - **目标架构**: arm64-v8a, armeabi-v7a, x86, x86_64
 
@@ -159,7 +159,7 @@ flutter build apk --release
 ### 构建输出
 ```
 Running Gradle task 'assembleRelease'...                          180.3s
-√ Built build\app\outputs\flutter-apk\app-release.apk (123.3MB)
+√ Built build\app\outputs\flutter-apk\app-release.apk (93.8MB)
 ```
 
 ---
@@ -293,8 +293,8 @@ Running Gradle task 'assembleRelease'...                          180.3s
 
 ### 📦 下载
 - **文件**: [拉海洛终端_v1.3_Android.apk](链接)
-- **大小**: 124 MB
-- **SHA256**: `5c6912141e43f448312f11e3c9c87f1660c7b60d08d28226530fbeead74bf69a`
+- **大小**: 93.8 MB
+- **SHA256**: `DB391A61720C02038B8614C4C59D51814FF2C95871E3CA81461F2E8C6632A061`
 
 ### 📱 系统要求
 - Android 5.0+ (API 21+)
