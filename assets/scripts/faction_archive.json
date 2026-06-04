@@ -1,0 +1,16 @@
+{
+  "comment": "势力档案占位内容（先占位后补充）。仅含势力组织；角色档案后续再做。id 对应 local_seed 中的末帧图(<id>.png)与 LOGO 动画(<id>_anim.webm)，以及 asset_manifest.json 中的在线资源。",
+  "version": 3,
+  "factions": [
+    { "id": "faction_xingju", "name": "星炬学院", "intro": "【占位】星炬学院简介待补充。" },
+    { "id": "faction_shenkong", "name": "深空联合", "intro": "【占位】深空联合简介待补充。" },
+    { "id": "faction_qiqiu", "name": "七丘", "intro": "【占位】七丘简介待补充。" },
+    { "id": "faction_heihaian", "name": "黑海岸", "intro": "【占位】黑海岸简介待补充。" },
+    { "id": "faction_canxinghui", "name": "残星会", "intro": "【占位】残星会简介待补充。" },
+    { "id": "faction_huanglong", "name": "煌龙", "intro": "【占位】煌龙简介待补充。" },
+    { "id": "faction_jiting", "name": "稷庭", "intro": "【占位】稷庭简介待补充。" },
+    { "id": "faction_laguna", "name": "拉古那", "intro": "【占位】拉古那简介待补充。" },
+    { "id": "faction_xianxinggongyue", "name": "先行公约", "intro": "【占位】先行公约简介待补充。" }
+  ],
+  "characters": []
+}

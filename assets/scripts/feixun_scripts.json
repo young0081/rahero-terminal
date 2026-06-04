@@ -1,0 +1,48 @@
+{
+  "comment": "飞讯（feixun）占位对话剧本。结构按游戏内飞讯界面设计：每个联系人有头像(资源id)、最近消息、消息列表。势力联系人的 avatarAssetId 使用各自势力 LOGO 的资源 id（与势力档案一致，如 faction_xingju）。真实剧情后续替换 messages 内容即可，结构保持不变。",
+  "version": 2,
+  "contacts": [
+    {
+      "id": "chat_xingju_official",
+      "name": "星炬学院·公告",
+      "avatarAssetId": "faction_xingju",
+      "pinned": true,
+      "messages": [
+        { "id": "m1", "from": "peer", "type": "text", "time": "09:00", "content": "【占位】欢迎接入拉海洛终端。本条为占位消息，正式剧情文本后续补充。" },
+        { "id": "m2", "from": "peer", "type": "text", "time": "09:01", "content": "【占位】今日学院通讯一切正常。" },
+        { "id": "m3", "from": "me", "type": "text", "time": "09:02", "content": "【占位】收到，感谢通知。" },
+        { "id": "m4", "from": "peer", "type": "text", "time": "09:03", "content": "【占位】如需调阅势力档案，可在终端左侧切换。" }
+      ]
+    },
+    {
+      "id": "chat_shenkong_terminal",
+      "name": "深空联合·终端助手",
+      "avatarAssetId": "faction_shenkong",
+      "pinned": false,
+      "messages": [
+        { "id": "m1", "from": "peer", "type": "text", "time": "08:30", "content": "【占位】你好，我是深空联合终端助手。这里是飞讯占位会话。" },
+        { "id": "m2", "from": "me", "type": "text", "time": "08:31", "content": "【占位】收到。" },
+        { "id": "m3", "from": "peer", "type": "text", "time": "08:32", "content": "【占位】有任何终端使用问题，可随时呼叫。" }
+      ]
+    },
+    {
+      "id": "chat_qiqiu",
+      "name": "七丘·简讯",
+      "avatarAssetId": "faction_qiqiu",
+      "pinned": false,
+      "messages": [
+        { "id": "m1", "from": "peer", "type": "text", "time": "昨天", "content": "【占位】七丘频道占位消息，正式内容后续补充。" }
+      ]
+    },
+    {
+      "id": "chat_heihaian",
+      "name": "黑海岸·通讯",
+      "avatarAssetId": "faction_heihaian",
+      "pinned": false,
+      "messages": [
+        { "id": "m1", "from": "peer", "type": "text", "time": "昨天", "content": "【占位】黑海岸频道占位消息，正式内容后续补充。" },
+        { "id": "m2", "from": "me", "type": "text", "time": "昨天", "content": "【占位】已读。" }
+      ]
+    }
+  ]
+}

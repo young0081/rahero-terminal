@@ -1,0 +1,30 @@
+{
+  "comment": "飞讯表情目录。每个表情对应一个可从库街区下载的表情包贴图(assetId)，未下载时用 unicode 字形(glyph)兜底显示。库街区发布有各系列鸣潮表情包，上线后把贴图上传并在 asset_manifest.json 回填地址即可。",
+  "version": 1,
+  "emojis": [
+    { "id": "emoji_smile", "glyph": "😀", "name": "微笑" },
+    { "id": "emoji_grin", "glyph": "😄", "name": "大笑" },
+    { "id": "emoji_joy", "glyph": "😂", "name": "笑哭" },
+    { "id": "emoji_wink", "glyph": "😉", "name": "眨眼" },
+    { "id": "emoji_love", "glyph": "😍", "name": "爱心眼" },
+    { "id": "emoji_cool", "glyph": "😎", "name": "酷" },
+    { "id": "emoji_think", "glyph": "🤔", "name": "思考" },
+    { "id": "emoji_cry", "glyph": "😭", "name": "大哭" },
+    { "id": "emoji_shock", "glyph": "😲", "name": "震惊" },
+    { "id": "emoji_sweat", "glyph": "😅", "name": "苦笑" },
+    { "id": "emoji_sleepy", "glyph": "😴", "name": "睡觉" },
+    { "id": "emoji_angry", "glyph": "😠", "name": "生气" },
+    { "id": "emoji_thumbsup", "glyph": "👍", "name": "点赞" },
+    { "id": "emoji_clap", "glyph": "👏", "name": "鼓掌" },
+    { "id": "emoji_ok", "glyph": "👌", "name": "OK" },
+    { "id": "emoji_wave", "glyph": "👋", "name": "挥手" },
+    { "id": "emoji_heart", "glyph": "❤️", "name": "红心" },
+    { "id": "emoji_star", "glyph": "⭐", "name": "星星" },
+    { "id": "emoji_fire", "glyph": "🔥", "name": "火" },
+    { "id": "emoji_sparkle", "glyph": "✨", "name": "闪光" },
+    { "id": "emoji_check", "glyph": "✅", "name": "对勾" },
+    { "id": "emoji_question", "glyph": "❓", "name": "问号" },
+    { "id": "emoji_bulb", "glyph": "💡", "name": "灯泡" },
+    { "id": "emoji_rocket", "glyph": "🚀", "name": "火箭" }
+  ]
+}

@@ -1,0 +1,116 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# ============================================================
+# 拉海洛终端 项目特有规则
+# ============================================================
+# 受版权保护的素材源文件（开发参考用，绝不入库；上传到库街区后由 app 运行时下载）
+/鸣潮息屏/
+/refs/
+
+# 运行时下载的资源缓存（每个用户首次运行时自动下载到本地）
+/cache/
+*.cache
+
+# 本地素材种子（受版权，打进本地 exe 但不入开源仓库；CDN 上线后改走在线下载）
+# 忽略种子媒体文件，但保留 README 以确保目录存在、clone 后可正常构建
+/assets/local_seed/*
+!/assets/local_seed/README.txt
+
+# 环境变量与密钥
+.env
+.env.local
+*.keystore
+key.properties
+
+# 构建产物与日志
+build_log.txt
+build_verbose.log
+build_output.txt
+build.log
+*.log
+
+# Inno Setup 相关
+installer_output/
+release_temp/
+ChineseSimplified.isl
+installer_setup.iss
+
+# 临时文件
+*.tmp
+*.temp
+~*
+
+# Claude Code 项目特有
+.claude/
+
+
+
+# 构建产物与日志
+build_log.txt
+build_verbose.log
+build_output.txt
+build.log
+
+# Inno Setup 相关
+installer_output/
+release_temp/
+ChineseSimplified.isl
+installer_setup.iss
+
+# 临时文件
+*.tmp
+*.temp
+~*
+
+# Claude Code 项目特有（保留本地配置，不提交到仓库）
+.claude/
+
+
+# Node.js（意外添加的）
+node_modules/
+package-lock.json
+

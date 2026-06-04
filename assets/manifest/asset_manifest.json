@@ -1,0 +1,88 @@
+{
+  "manifestVersion": 3,
+  "comment": "拉海洛终端资源清单。受版权保护的图标/视频不入库，由 app 首次运行时从 baseUrl 下载并缓存到本地。baseUrl 上线前需替换为库街区实际托管地址。checksum 为空表示暂不校验（素材上传后回填 sha256）。category：boot/logo/avatar/faction。type：image=静态末帧(透明PNG)，logo_anim=点开播一遍停末帧的透明 LOGO 动画(APNG)。仅含势力；角色档案后续再做。",
+  "baseUrl": "https://REPLACE_WITH_KUROBBS_CDN/rahero-terminal/assets/v1",
+  "assets": [
+    {
+      "id": "boot_shenkong_text",
+      "name": "深空联合（带文字）开机动画",
+      "category": "boot",
+      "type": "video",
+      "source": "boot/shenkong_text.mp4",
+      "cache": "boot/shenkong_text.mp4",
+      "checksum": ""
+    },
+    { "id": "boot_shenkong", "name": "深空联合（带文字）开机 LOGO 静帧", "category": "boot", "type": "image", "source": "boot/shenkong.png", "cache": "boot/shenkong.png", "checksum": "" },
+    { "id": "boot_shenkong_anim", "name": "深空联合（带文字）开机 LOGO 动画", "category": "boot", "type": "logo_anim", "source": "boot/shenkong.apng", "cache": "boot/shenkong.apng", "checksum": "" },
+    {
+      "id": "logo_shenkong",
+      "name": "深空联合 LOGO（主界面背景水印）",
+      "category": "logo",
+      "type": "image",
+      "source": "logo/shenkong_logo.png",
+      "cache": "logo/shenkong_logo.png",
+      "checksum": ""
+    },
+    {
+      "id": "avatar_rover",
+      "name": "漂泊者头像（用户默认头像，来源库街区 wiki）",
+      "category": "avatar",
+      "type": "image",
+      "source": "avatars/rover.png",
+      "cache": "avatars/rover.png",
+      "checksum": ""
+    },
+
+    { "id": "emoji_smile", "name": "表情·微笑", "category": "emoji", "type": "image", "source": "emojis/smile.png", "cache": "emojis/smile.png", "checksum": "" },
+    { "id": "emoji_grin", "name": "表情·大笑", "category": "emoji", "type": "image", "source": "emojis/grin.png", "cache": "emojis/grin.png", "checksum": "" },
+    { "id": "emoji_joy", "name": "表情·笑哭", "category": "emoji", "type": "image", "source": "emojis/joy.png", "cache": "emojis/joy.png", "checksum": "" },
+    { "id": "emoji_wink", "name": "表情·眨眼", "category": "emoji", "type": "image", "source": "emojis/wink.png", "cache": "emojis/wink.png", "checksum": "" },
+    { "id": "emoji_love", "name": "表情·爱心眼", "category": "emoji", "type": "image", "source": "emojis/love.png", "cache": "emojis/love.png", "checksum": "" },
+    { "id": "emoji_cool", "name": "表情·酷", "category": "emoji", "type": "image", "source": "emojis/cool.png", "cache": "emojis/cool.png", "checksum": "" },
+    { "id": "emoji_think", "name": "表情·思考", "category": "emoji", "type": "image", "source": "emojis/think.png", "cache": "emojis/think.png", "checksum": "" },
+    { "id": "emoji_cry", "name": "表情·大哭", "category": "emoji", "type": "image", "source": "emojis/cry.png", "cache": "emojis/cry.png", "checksum": "" },
+    { "id": "emoji_shock", "name": "表情·震惊", "category": "emoji", "type": "image", "source": "emojis/shock.png", "cache": "emojis/shock.png", "checksum": "" },
+    { "id": "emoji_sweat", "name": "表情·苦笑", "category": "emoji", "type": "image", "source": "emojis/sweat.png", "cache": "emojis/sweat.png", "checksum": "" },
+    { "id": "emoji_sleepy", "name": "表情·睡觉", "category": "emoji", "type": "image", "source": "emojis/sleepy.png", "cache": "emojis/sleepy.png", "checksum": "" },
+    { "id": "emoji_angry", "name": "表情·生气", "category": "emoji", "type": "image", "source": "emojis/angry.png", "cache": "emojis/angry.png", "checksum": "" },
+    { "id": "emoji_thumbsup", "name": "表情·点赞", "category": "emoji", "type": "image", "source": "emojis/thumbsup.png", "cache": "emojis/thumbsup.png", "checksum": "" },
+    { "id": "emoji_clap", "name": "表情·鼓掌", "category": "emoji", "type": "image", "source": "emojis/clap.png", "cache": "emojis/clap.png", "checksum": "" },
+    { "id": "emoji_ok", "name": "表情·OK", "category": "emoji", "type": "image", "source": "emojis/ok.png", "cache": "emojis/ok.png", "checksum": "" },
+    { "id": "emoji_wave", "name": "表情·挥手", "category": "emoji", "type": "image", "source": "emojis/wave.png", "cache": "emojis/wave.png", "checksum": "" },
+    { "id": "emoji_heart", "name": "表情·红心", "category": "emoji", "type": "image", "source": "emojis/heart.png", "cache": "emojis/heart.png", "checksum": "" },
+    { "id": "emoji_star", "name": "表情·星星", "category": "emoji", "type": "image", "source": "emojis/star.png", "cache": "emojis/star.png", "checksum": "" },
+    { "id": "emoji_fire", "name": "表情·火", "category": "emoji", "type": "image", "source": "emojis/fire.png", "cache": "emojis/fire.png", "checksum": "" },
+    { "id": "emoji_sparkle", "name": "表情·闪光", "category": "emoji", "type": "image", "source": "emojis/sparkle.png", "cache": "emojis/sparkle.png", "checksum": "" },
+    { "id": "emoji_check", "name": "表情·对勾", "category": "emoji", "type": "image", "source": "emojis/check.png", "cache": "emojis/check.png", "checksum": "" },
+    { "id": "emoji_question", "name": "表情·问号", "category": "emoji", "type": "image", "source": "emojis/question.png", "cache": "emojis/question.png", "checksum": "" },
+    { "id": "emoji_bulb", "name": "表情·灯泡", "category": "emoji", "type": "image", "source": "emojis/bulb.png", "cache": "emojis/bulb.png", "checksum": "" },
+    { "id": "emoji_rocket", "name": "表情·火箭", "category": "emoji", "type": "image", "source": "emojis/rocket.png", "cache": "emojis/rocket.png", "checksum": "" },
+
+    { "id": "faction_xingju", "name": "星炬学院", "category": "faction", "type": "image", "source": "factions/xingju.png", "cache": "factions/xingju.png", "checksum": "" },
+    { "id": "faction_xingju_anim", "name": "星炬学院 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/xingju.apng", "cache": "factions/xingju.apng", "checksum": "" },
+
+    { "id": "faction_shenkong", "name": "深空联合", "category": "faction", "type": "image", "source": "factions/shenkong.png", "cache": "factions/shenkong.png", "checksum": "" },
+    { "id": "faction_shenkong_anim", "name": "深空联合 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/shenkong.apng", "cache": "factions/shenkong.apng", "checksum": "" },
+
+    { "id": "faction_qiqiu", "name": "七丘", "category": "faction", "type": "image", "source": "factions/qiqiu.png", "cache": "factions/qiqiu.png", "checksum": "" },
+    { "id": "faction_qiqiu_anim", "name": "七丘 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/qiqiu.apng", "cache": "factions/qiqiu.apng", "checksum": "" },
+
+    { "id": "faction_heihaian", "name": "黑海岸", "category": "faction", "type": "image", "source": "factions/heihaian.png", "cache": "factions/heihaian.png", "checksum": "" },
+    { "id": "faction_heihaian_anim", "name": "黑海岸 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/heihaian.apng", "cache": "factions/heihaian.apng", "checksum": "" },
+
+    { "id": "faction_canxinghui", "name": "残星会", "category": "faction", "type": "image", "source": "factions/canxinghui.png", "cache": "factions/canxinghui.png", "checksum": "" },
+    { "id": "faction_canxinghui_anim", "name": "残星会 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/canxinghui.apng", "cache": "factions/canxinghui.apng", "checksum": "" },
+
+    { "id": "faction_huanglong", "name": "煌龙", "category": "faction", "type": "image", "source": "factions/huanglong.png", "cache": "factions/huanglong.png", "checksum": "" },
+    { "id": "faction_huanglong_anim", "name": "煌龙 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/huanglong.apng", "cache": "factions/huanglong.apng", "checksum": "" },
+
+    { "id": "faction_jiting", "name": "稷庭", "category": "faction", "type": "image", "source": "factions/jiting.png", "cache": "factions/jiting.png", "checksum": "" },
+    { "id": "faction_jiting_anim", "name": "稷庭 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/jiting.apng", "cache": "factions/jiting.apng", "checksum": "" },
+
+    { "id": "faction_laguna", "name": "拉古那", "category": "faction", "type": "image", "source": "factions/laguna.png", "cache": "factions/laguna.png", "checksum": "" },
+    { "id": "faction_laguna_anim", "name": "拉古那 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/laguna.apng", "cache": "factions/laguna.apng", "checksum": "" },
+
+    { "id": "faction_xianxinggongyue", "name": "先行公约", "category": "faction", "type": "image", "source": "factions/xianxinggongyue.png", "cache": "factions/xianxinggongyue.png", "checksum": "" },
+    { "id": "faction_xianxinggongyue_anim", "name": "先行公约 LOGO 动画", "category": "faction", "type": "logo_anim", "source": "factions/xianxinggongyue.apng", "cache": "factions/xianxinggongyue.apng", "checksum": "" }
+  ]
+}
