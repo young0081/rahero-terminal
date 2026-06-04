@@ -1,6 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 网络权限：资源下载、图鉴数据同步 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 外部存储权限：缓存下载的资源文件 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+                     android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+                     android:maxSdkVersion="32" />
+
     <application
-        android:label="rahero_terminal"
+        android:label="拉海洛终端"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
