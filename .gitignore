@@ -84,7 +84,10 @@ installer_setup.iss
 *.temp
 ~*
 
-# Claude Code 项目特有
+# Agent / spec 工作区文件（保留本地，不提交到开源仓库）
+CLAUDE.md
+openspec/
+.omx/
 .claude/
 
 
@@ -113,4 +116,3 @@ installer_setup.iss
 # Node.js（意外添加的）
 node_modules/
 package-lock.json
-
